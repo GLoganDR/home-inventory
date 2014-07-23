@@ -8,6 +8,7 @@ function Item(name, room, acquired, count, cost){
   this.acquired = new Date(acquired);
   this.count =  parseInt(count);
   this.cost = parseFloat(cost);
+
 }
 
 Item.prototype.save = function(cb){
@@ -16,4 +17,9 @@ Item.prototype.save = function(cb){
   });
 };
 
+Item.find = function(query, cb){
+  cItem.find(query).toArray(function(err, items){
+    cb(items);
+  });
+};
 module.exports = Item;
