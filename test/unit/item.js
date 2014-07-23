@@ -75,4 +75,38 @@ describe('Item', function(){
       });
     });
   });
+  describe('#value', function(){
+    it('should return the value for a particular item', function(){
+      var couch = new Item('Couch', 'Living', '3/4/2009', '2', '1000');
+      var val = couch.value();
+      expect(val).to.equal(2000);
+    });
+  });
+  describe('.value', function(){
+    it('should return the value for all items in a particular room', function(done){
+      var bed = new Item('Bed', 'Bedroom', '3/4/2009', '1','1300');
+      var chair = new Item('Chair', 'Bedroom', '3/4/2009', '1', '300');
+      var dresser = new Item('Dresser', 'Bedroom', '3/4/2009', '1', '500');
+      var computer = new Item('Computer', 'Bedroom', '3/4/2009', '1', '2000');
+      var oven = new Item('Oven', 'Kitchen', '3/4/2009', '1', '600');
+      var dishwasher = new Item('Dishwasher', 'Kitchen', '3/4/2009', '1', '400');
+      
+      chair.save(function(){
+        bed.save(function(){
+          dresser.save(function(){
+            computer.save(function(){
+              oven.save(function(){
+                dishwasher.save(function(){
+                  Item.value({room:'Bedroom'}, function(value){
+                    expect(value).to.equal(4100);
+                    done();
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
 });
